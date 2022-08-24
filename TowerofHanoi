@@ -5,7 +5,7 @@ void towerofhanoi(int n,int *steps,char A,char B,char C)
     if(n>0)
     {
         towerofhanoi(n-1,steps,A,C,B);
-        printf("Step %d:Move disc from %c to %c\n",++*(steps),A,C);
+        printf("Step %d:Move disc %d from %c to %c\n",++*(steps),n,A,C);
         towerofhanoi(n-1,steps,B,A,C);
     }
 }
