@@ -1,0 +1,174 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int data;
+    struct node *next;
+};
+void sortedinsertion(struct node **head,int n)
+{
+    struct node *temp=(struct node *)malloc(sizeof(struct node));
+    temp->data=n;
+    temp->next=NULL;
+    struct node *cur,*prv;
+    for(cur=*head,prv=NULL;cur!=NULL&&n>cur->data;cur=cur->next)
+    {
+        prv=cur;
+    }
+    temp->next=cur;
+    if(prv==NULL)
+    {
+        *head=temp;
+    }
+    else
+    {
+        prv->next=temp;
+    }
+}
+void add_end(struct node **head,int n)
+{
+    struct node *temp=(struct node *)malloc(sizeof(struct node));
+    temp->data=n;
+     struct node *t;
+    temp->next=NULL;
+    if(*head==NULL)
+    {
+        *head=temp;
+    }
+    else
+    {
+        for(t=*head;t->next!=NULL;t=t->next);
+        t->next=temp;
+    }
+}
+void display(struct node **head)
+{
+    struct node *t;
+    if(*head==NULL)
+    {
+        printf("Empty LinkedList\n");
+    }
+    else
+    {
+         printf("Elements of the LinkedList are:\n");
+        for(t=*head;t!=NULL;t=t->next)
+        {
+            printf("%d ",t->data);
+        }
+        printf("\n ");
+    }
+}
+void recursive_sorted_insertion(struct node **head,int n)
+{
+    struct node *temp=(struct node *)malloc(sizeof(struct node));
+    temp->data=n;
+    struct node *t;
+    temp->next=NULL;
+    if(*head==NULL)
+    {
+        *head=temp;
+    }
+    else if(n<(*head)->data)
+    {
+        temp->next=*head;
+        *head=temp;
+    }
+    else
+    {
+        recursive_sorted_insertion(&(*head)->next,n);
+    }
+}
+void recursive_insertion(struct node **head,int n)
+{
+    struct node *temp=(struct node *)malloc(sizeof(struct node));
+    temp->data=n;
+    struct node *t;
+    temp->next=NULL;
+    if(*head==NULL)
+    {
+        *head=temp;
+    }
+    else
+    {
+        recursive_insertion(&(*head)->next,n);
+    }
+}
+void recursivedisplay(struct node **head)
+{
+    struct node *t;
+    if(*head==NULL)
+    {
+       return;
+    }
+    else
+    {
+        printf("%d ",(*head)->data);
+        recursivedisplay(&(*head)->next);
+    }
+}
+int recursive_count(struct node **head)
+{
+    if(*head==NULL)
+    {
+        return 0;
+    }
+    else
+    {
+        return 1+recursive_count(&(*head)->next);
+    }
+}
+int main()
+{
+    struct node *head=NULL;
+    int loop=1;
+    int d;
+    int c;
+    while(loop)
+    {
+        printf("Enter choice\n");
+        printf("1 for sorted insertion\n");
+        printf("2 for display\n");
+        printf("3 for recursive display\n");
+        printf("4 to insert element at end \n");
+        printf("5 to insert element at end recursively \n");
+        printf("6 to insert element in sorted order recursively \n");
+        printf("7 to find count of linkedlist  recursively \n");
+        printf("0 to exit\n");
+        scanf("%d",&c);
+        switch(c)
+        {
+            case 1:
+                printf("Enter value\n");
+                scanf("%d",&d);
+                sortedinsertion(&head,d);
+                break;
+            case 2:
+                display(&head);
+                break;
+            case 3:
+                printf("Elements of the LinkedList through Recurisve call are are:\n");
+                recursivedisplay(&head);
+                break;
+            case 4:
+                printf("Enter value\n");
+                scanf("%d",&d);
+                add_end(&head,d);
+            case 5:
+                printf("Enter value\n");
+                scanf("%d",&d);
+                recursive_insertion(&head,d);
+            case 6:
+                printf("Enter value\n");
+                scanf("%d",&d);
+                recursive_sorted_insertion(&head,d);
+                break;
+            case 7:
+                printf("The count of the Linked List is %d\n",recursive_count(&head));
+            case 0:
+                loop=0;
+                break;
+            default:
+                printf("Give proper values\n");
+        }
+    }
+}
