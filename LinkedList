@@ -55,7 +55,7 @@ void display(struct node **head)
         {
             printf("%d ",t->data);
         }
-        printf("\n ");
+        printf("\n");
     }
 }
 void recursive_sorted_insertion(struct node **head,int n)
@@ -117,6 +117,85 @@ int recursive_count(struct node **head)
         return 1+recursive_count(&(*head)->next);
     }
 }
+void reversedisplay(struct node **head)
+{
+    if(*head==NULL)
+    {
+        printf("Linkedlist is empty");
+    }
+    else
+    {
+        struct node *end=NULL;
+        struct node *temp;
+        while(end!=*head)
+        {
+            for(temp=*head;temp->next!=end;temp=temp->next);
+             printf("%d ",temp->data);
+             end=temp;
+        }
+        printf("\n");
+    }
+}
+void recursive_reverse_display(struct node **head)
+{
+    if(*head==NULL)
+    {
+        return;
+    }
+    else
+    {
+       recursive_reverse_display(&(*head)->next);
+       printf("%d ",(*head)->data);
+    }
+}
+void phy_reverse(struct node **head)
+{
+    struct node *head2=NULL;
+    struct node *temp;
+    while(*head!=NULL)
+    {
+        temp=*head;
+        *head=(*head)->next;
+        temp->next=head2;
+        head2=temp;
+    }
+    *head=head2;
+}
+void selectionsort(struct node **head)
+{
+    struct node *i;
+    struct node *j;
+    for(i=*head;i->next!=NULL;i=i->next)
+    {
+        for(j=i->next;j!=NULL;j=j->next)
+        {
+            if(i->data>j->data)
+            {
+                int temp=i->data;
+                i->data=j->data;
+                j->data=temp;
+            }
+        }
+    }
+}
+void bubblesort(struct node **head)
+{
+    struct node *j;
+    struct node *end=NULL;
+    while(end!=*head)
+    {
+        for(j=*head;j->next!=end;j=j->next)
+        {
+            if(j->data>j->next->data)
+            {
+                int temp=j->data;
+                j->data=j->next->data;
+                j->next->data=temp;
+            }
+        }
+        end=j;
+    }
+}
 int main()
 {
     struct node *head=NULL;
@@ -127,12 +206,17 @@ int main()
     {
         printf("Enter choice\n");
         printf("1 for sorted insertion\n");
-        printf("2 for display\n");
+        printf("2 for normal display\n");
         printf("3 for recursive display\n");
         printf("4 to insert element at end \n");
         printf("5 to insert element at end recursively \n");
         printf("6 to insert element in sorted order recursively \n");
         printf("7 to find count of linkedlist  recursively \n");
+        printf("8 to display elements in reverse order \n");
+        printf("9 to display elements in reverse order through recursion \n");
+        printf("10 to physically reverse \n");
+        printf("11 to perform Selection Sort \n");
+        printf("12 to perform Bubble Sort \n");
         printf("0 to exit\n");
         scanf("%d",&c);
         switch(c)
@@ -146,17 +230,19 @@ int main()
                 display(&head);
                 break;
             case 3:
-                printf("Elements of the LinkedList through Recurisve call are are:\n");
+                printf("Elements of the LinkedList through Recurisve call  are:\n");
                 recursivedisplay(&head);
                 break;
             case 4:
                 printf("Enter value\n");
                 scanf("%d",&d);
                 add_end(&head,d);
+                break;
             case 5:
                 printf("Enter value\n");
                 scanf("%d",&d);
                 recursive_insertion(&head,d);
+                break;
             case 6:
                 printf("Enter value\n");
                 scanf("%d",&d);
@@ -164,6 +250,28 @@ int main()
                 break;
             case 7:
                 printf("The count of the Linked List is %d\n",recursive_count(&head));
+                break;
+            case 8:
+                printf("Elements of the LinkedList in Reversed order  are:\n");
+                reversedisplay(&head);
+                break;
+            case 9:
+                printf("Elements of the LinkedList in Reversed order through recursion are:\n");
+                reversedisplay(&head);
+                printf("\n");
+                break;
+            case 10:
+                phy_reverse(&head);
+                 printf("The elements of the LinkedList are physically reversed\n");
+                break;
+            case 11:
+                selectionsort(&head);
+                printf("Selection Sort has been successfully performed on the LinkedList\n");
+                break;
+            case 12:
+                bubblesort(&head);
+                printf("Bubble Sort has been successfully performed on the LinkedList\n");
+                break;
             case 0:
                 loop=0;
                 break;
