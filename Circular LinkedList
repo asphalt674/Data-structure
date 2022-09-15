@@ -1,0 +1,167 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct node
+{
+    int data;
+    struct node *next;
+}node;
+void insert_in_sorted_order(node **head,int n)
+{
+    struct node *var=(struct node *)malloc(sizeof(struct node));
+     struct node *h=NULL;
+    var->data=n;
+    if(*head==NULL)
+    {
+        *head=var;
+        var->next=*head;
+    }
+    else
+    {
+       struct node *prv,*cur; 
+       for(cur=*head,prv=NULL;cur!=h&&n>cur->data;cur=cur->next)
+       {
+           h=*head;//here h is made head so that it can traverse till the last place
+           prv=cur;
+       }
+       var->next=cur;
+       if(prv)
+       {
+            prv->next=var;
+       }
+       else
+//if there is no previous node and we need to insert at the beginning,then last node  should be linked with head
+       {
+           for(cur=*head;cur->next!=*head;cur=cur->next);
+           cur->next=var;
+           *head=var;
+       }
+    }
+}
+void insert_in_serial_order(node **head,int n)
+{
+    struct node *var=(struct node *)malloc(sizeof(struct node));
+    var->data=n;
+    if(*head==NULL)
+    {
+        *head=var;
+        var->next=*head;
+    }
+    else
+    {
+       struct node *temp;
+       for(temp=*head;temp->next!=*head;temp=temp->next);
+       temp->next=var;
+       var->next=*head;
+    }
+}
+void delete_first(node **head,int n)
+{
+    node *temp;
+    for(temp=*head;temp->next!=*head;temp=temp->next);
+    *head=(*head)->next;
+    temp->next=*head;
+}
+void deletion(node **head,int n)
+{
+    node *temp,*temp3,*prv,*h=NULL;
+    int found=0;
+    if(*head==NULL)
+    {
+        printf("LinkedList empty\n");
+    }
+    else if((*head)->data==n)
+    {
+        delete_first(head,n);
+    }
+    else
+    {
+        for(temp=*head,prv=NULL;temp!=h;temp=temp->next)
+        {
+            h=*head;
+            if(n==temp->data)
+            {
+                break;
+            }
+            prv=temp;
+        }
+        if(temp==*head)
+        {
+            printf("val not found");
+        }
+        else
+        {
+            temp3=temp->next;
+            prv->next=temp3;
+            free(temp);
+        }
+    }
+    
+}
+void display(node **head)
+{
+    if(*head==NULL)
+    {
+        printf("LinkedList is empty\n");
+    }
+    else
+    {
+       struct node *temp;
+       temp=*head;
+       do
+       {
+           printf("%d ",temp->data);
+           temp=temp->next;
+       }while(temp!=*head);
+    }
+}
+int main()
+{
+    struct node *head=NULL;
+    int c,l=1,n;
+    while(l)
+    {
+        printf("Enter choice\n");
+        printf("Enter 1 for sorted insertion in Circular Linked List\n");
+        printf("Enter 2 for serial insertion in Circular Linked List\n");
+        printf("Enter 3 for display\n");
+        printf("Enter 4 to delete a partcular value from the LinkedList\n");
+        printf("Enter 0 to exit\n");
+        scanf("%d",&c);
+        switch(c)
+        {
+            case 1:
+            {
+                 printf("Enter data\n");
+                 scanf("%d",&n);
+                insert_in_sorted_order(&head,n);
+                break;
+            }
+            case 2:
+            {
+                 printf("Enter data\n");
+                 scanf("%d",&n);
+                insert_in_serial_order(&head,n);
+                break;
+            }
+            case 3:
+            {
+                printf("The elements of the LinkedList are \n");
+                display(&head);
+                printf("\n");
+                break;
+            }
+            case 4:
+            {
+                printf("Enter value whch you want to delete\n");
+                scanf("%d",&n);
+               deletion(&head,n);
+               break;
+            }
+            case 0:
+            {
+                l=0;
+                break;
+            }
+        }
+    }
+}
