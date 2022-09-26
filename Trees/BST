@@ -14,13 +14,25 @@ struct node *createnode(int data)
     n->right=NULL;
     return n;
 }
-void preorder(struct node *root)
+int isBST(struct node *root)
 {
+    static struct node *prev=NULL;
     if(root!=NULL)
     {
-        printf("%d ",root->data);
-        preorder(root->left);
-        preorder(root->right);
+        if(!isBST(root->left))
+        {
+            return 0;
+        }
+        if(prev!=NULL && root->data<=prev->data)
+        {
+            return 0;
+        }
+        prev=root;
+        return isBST(root->right);
+    }
+    else
+    {
+        return 1;
     }
 }
 //int is
@@ -44,6 +56,25 @@ struct node *search(struct node *root,int key)
         return search(root->left,key);
     }
 }
+struct node *searchiter(struct node *root,int key)
+{
+    while(root!=NULL)
+    {
+        if(key==root->data)
+        {
+            return root;
+        }
+        else if(key<root->data)
+        {
+            root=root->left;
+        }
+        else
+        {
+            root=root->right;
+        }
+    }
+    return root;
+}
 int main()
 {
    struct node *p=createnode(5);
@@ -61,10 +92,29 @@ int main()
    p->right=p2;
    p1->left=p3;
    p1->right=p4;
-   //preorder(p);
-   if(search(p,4)!=NULL)
+   if(isBST(p))
    {
-       printf("Value is found\n");
+       printf("This is a bst \n");
+   }
+   else
+   {
+       printf("This is not a bst \n");
+   }
+   /*struct node *n=(struct node *)malloc(sizeof(struct node));
+   n=search(p,4);
+   if(n!=NULL)
+   {
+       printf("Value is found  %d\n",n->data);
+   }
+   else
+   {
+       printf("Value is not found\n");
+   }*/
+   struct node *n=(struct node *)malloc(sizeof(struct node));
+   n=searchiter(p,4);
+   if(n!=NULL)
+   {
+        printf("Value is found  %d\n",n->data);
    }
    else
    {
