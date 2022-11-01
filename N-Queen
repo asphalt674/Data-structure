@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+void print(int n,char board[n][n],int *count)
+{
+    *count=*count+1;
+    printf("---------------Chess Board ---------%d\n",*count);
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            printf("%c ",board[i][j]);
+        }
+        printf("\n");
+    }
+}
+int issafe(int row,int col,int n,char board[n][n])
+{
+    int i,j;
+    //vertically up
+    for(i=row-1;i>=0;i--)
+    {
+        if(board[i][col]=='Q')
+        {
+            return 0;
+        }
+    }
+    //left diagonal
+    for(i=row-1,j=col-1;i>=0&&j>=0;i--,j--)
+    {
+        if(board[i][j]=='Q')
+        {
+            return 0;
+        }
+    }
+    //right diagonal
+    for(i=row-1,j=col+1;i>=0&&j<n;i--,j++)
+    {
+        if(board[i][j]=='Q')
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+void nqueen(int x,int n,char board[n][n])
+{
+  if(x==n)
+  {
+      static int count=0;
+      print(n,board,&count);
+  }
+  else
+  {
+      for(int j=0;j<n;j++)
+      {
+          if(issafe(x,j,n,board))
+          {
+              board[x][j]='Q';
+              nqueen(x+1,n,board);
+              board[x][j]='X';
+          }
+      }
+  }
+}
+int main()
+{
+    int n;
+    printf("Enter the no of queens\n");
+    scanf("%d",&n);
+    char board[n][n];
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+           board[i][j]='X';
+        }
+    }
+    nqueen(0,n,board);
+}
