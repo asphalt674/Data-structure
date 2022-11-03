@@ -1,0 +1,144 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct bs_tree
+{
+    int data;
+    struct bs_tree *left,*right;
+}BS_TREE;
+void initialise(BS_TREE **aar)
+{
+    *aar=NULL;
+}
+void rec_insert(BS_TREE **aar,int n)
+{
+    if(*aar==NULL)
+    {
+        *aar=(BS_TREE *)malloc(sizeof(BS_TREE));
+        (*aar)->data=n;
+        (*aar)->left=(*aar)->right=NULL;
+    }
+    else if(n<(*aar)->data)
+    {
+        rec_insert(&(*aar)->left,n);
+    }
+    else
+    {
+         rec_insert(&(*aar)->right,n);
+    }
+}
+void iter_insert(BS_TREE **aar,int n)
+{
+    BS_TREE *t=(BS_TREE *)malloc(sizeof(BS_TREE));
+    (t)->data=n;
+    (t)->left=(t)->right=NULL;
+    if(*aar==NULL)
+    {
+        *aar=t;
+    }
+    else
+    {
+        BS_TREE *par,*cur;
+        par=NULL;
+        cur=*aar;
+        while(cur!=NULL)
+        {
+            par=cur;
+            if(n<(cur)->data)
+            {
+                cur=(cur)->left;
+            }
+            else
+            {
+                cur=(cur)->right;
+            }
+        }
+        if(n>par->data)
+        {
+            (par)->right=t;
+        }
+        else
+        {
+            (par)->left=t;
+        }
+    }
+}
+void inorder(BS_TREE **aar)
+{
+    if(*aar==NULL)
+    {
+       return;
+    }
+    else
+    {
+        inorder(&(*aar)->left);
+        printf("%d ",(*aar)->data);
+        inorder(&(*aar)->right);
+    }
+}
+void it_inorder(BS_TREE *root)
+{
+    BS_TREE **stack=(BS_TREE**)malloc(sizeof(BS_TREE)*100);
+    int top=-1;
+    while(1)
+    {
+        while(root)
+        {
+            stack[++top]=root;
+            root=root->left;
+        }
+        if(top!=-1)
+        {
+            root=stack[top--];
+            printf("%d ",root->data);
+            root=root->right;
+        }
+        else
+        {
+            break;
+        }
+    }
+}
+void it_preorder(BS_TREE *root)
+{
+    BS_TREE **stack=(BS_TREE **)malloc(sizeof(BS_TREE)*100);
+    int top=-1;
+    while(1)
+    {
+        while(root)
+        {
+            printf("%d ",root->data);
+            stack[++top]=root;
+            root=root->left;
+        }
+        if(top!=-1)
+        {
+            root=stack[top--];
+            root=root->right;
+        }
+        else
+        {
+            break;
+        }
+    }
+}
+int main()
+{
+    BS_TREE *aar;
+    int n;
+    initialise(&aar);
+    rec_insert(&aar,7);
+    rec_insert(&aar,1);
+    rec_insert(&aar,5);
+    rec_insert(&aar,8);
+    rec_insert(&aar,4);
+    rec_insert(&aar,6);
+    rec_insert(&aar,2);
+    rec_insert(&aar,9);
+    rec_insert(&aar,3);
+    iter_insert(&aar,1);
+    iter_insert(&aar,2);
+    iter_insert(&aar,320);
+    inorder(&aar);
+    printf("\n");
+    it_inorder(aar);
+}
