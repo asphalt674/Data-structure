@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+void main()
+{
+    int i,j,heap[10],temp,n,c,root;
+    printf("Enter the no of elements\n");
+    scanf("%d",&n);
+    printf("Enter the elements\n");
+    for(i=0;i<n;i++)
+    {
+        scanf("%d",&heap[i]);
+    }
+    for(i=1;i<n;i++)
+    {
+        c=i;
+        do
+        {
+           int root=(c-1)/2;
+           if(heap[root]<heap[c])//to create max heap array
+           {
+               temp=heap[root];
+               heap[root]=heap[c];
+               heap[c]=temp;
+           }
+           c=root;
+        }while(c!=0);
+    }
+    printf("Heap array is :");
+    for(i=0;i<n;i++)
+    {
+        printf("%d\t",heap[i]);
+    }
+    for(j=n-1;j>=0;j--)
+    {
+        temp=heap[0];
+        heap[0]=heap[j];//swap max element with rightmost leaf
+        heap[j]=temp;
+        root=0;
+        do
+        {
+            c=2*root+1;
+            if(heap[c]<heap[c+1]&&c<j-1)
+            {
+                c++;
+            }
+            if(heap[c]>heap[root]&&c<j)
+            {
+                temp=heap[c];
+                heap[c]=heap[root];
+                heap[root]=temp;
+            }
+            root=c;
+        }while(c<j);
+    }
+    printf("\nThe sorted array is  :");
+    for(j=0;j<n;j++)
+    {
+        printf("%d\t",heap[j]);
+    }
+}
