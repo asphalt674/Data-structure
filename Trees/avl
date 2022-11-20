@@ -1,0 +1,122 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct avl_tree
+{
+    int data,ht;
+    struct avl_tree *left,*right;
+}avl_tree;
+int max(int a,int b)
+{
+    if(a>b)
+    {
+        return a;
+    }
+    else
+    {
+        return b;
+    }
+}
+int height(avl_tree *aah)
+{
+    if(aah==NULL)
+    {
+        return 0;
+    }
+    return aah->ht;
+}
+avl_tree *right_rotation(avl_tree *y)
+{
+    avl_tree *x=y->left;
+    avl_tree *t2=x->right;
+    y->left=t2;
+    x->right=y;
+    //height update
+    x->ht=max(height(x->left),height(x->right))+1;
+    y->ht=max(height(y->left),height(y->right))+1;
+    return x;
+}
+avl_tree *left_rotation(avl_tree *x)
+{
+    avl_tree *y=x->left;
+    avl_tree *t2=y->left;
+    y->left=x;
+    x->right=t2;
+    //height update
+    x->ht=max(height(x->left),height(x->right))+1;
+    y->ht=max(height(y->left),height(y->right))+1;
+    return y;
+}
+int getbalance(avl_tree *n)
+{
+    if(n==NULL)
+    {
+        return 0;
+    }
+    return height(n->left)-height(n->right);
+}
+avl_tree *create(int data)
+{
+    avl_tree *n=( avl_tree *)malloc(sizeof( avl_tree ));
+    n->data=data;
+    n->left=n->right=NULL;
+    n->ht=1;
+    return n;
+}
+avl_tree *insert(avl_tree *n,int data)
+{
+    if(n==NULL)
+    {
+        return create(data);
+    }
+    if(data<n->data)
+    {
+       n->left= insert(n->left,data);
+    }
+    else if(data>n->data)
+    {
+        n->right=insert(n->right,data);
+    }
+    else
+    {
+        return n;
+    }
+    n->ht=max(height(n->left),height(n->right))+1;
+    int bal=getbalance(n);
+    if(bal>1&&data<n->left->data)//ll
+    {
+        return right_rotation(n);
+    }
+     if(bal<-1&&data>n->right->data)
+    {
+        return left_rotation(n);
+    }
+     if(bal>1&&data>n->left->data)//lR
+    {
+        n->left=left_rotation(n);
+        return right_rotation(n);
+    }
+     if(bal<-1&&data<n->right->data)
+    {
+         n->right=right_rotation(n);
+        return left_rotation(n);
+    }
+    return n;
+}
+void inorder(avl_tree *n)
+{
+    if(n!=NULL)
+    {
+        inorder(n->left);
+        printf("%d ",n->data);
+        inorder(n->right);
+    }
+}
+int main()
+{
+    avl_tree *root=NULL;
+    root=insert(root,10);
+    root=insert(root,20);
+    //root=insert(root,30);
+    
+    inorder(root);
+}
