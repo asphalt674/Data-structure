@@ -1,0 +1,225 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct node
+{
+    int data;
+    struct node *left,*right;
+}bs_tree;
+void it_inser(bs_tree **aar,int n)
+{
+    
+       bs_tree *t=(bs_tree * )malloc(sizeof(bs_tree *));
+       t->data=n;
+       t->left=t->right=NULL;
+       if(*aar==NULL)
+       {
+           *aar=t;
+       }
+       else
+       {
+           bs_tree *par=NULL,*cur=*aar;
+           while(cur!=NULL)
+           {
+               par=cur;
+               if(n>cur->data)
+               {
+                   cur=cur->right;
+               }
+               else
+               {
+                    cur=cur->left;
+               }
+           }
+           if(n>par->data)
+               {
+                  par->right=t;
+               }
+               else
+               {
+                    par->left=t;
+               }
+       }
+    
+}
+void rec_insert(bs_tree **aar,int n)
+{
+    if(*aar==NULL)
+    {
+        *aar=(bs_tree *)malloc(sizeof(bs_tree));
+        (*aar)->data=n;
+    }
+    else
+    {
+        if(n<(*aar)->data)
+        {
+            return rec_insert(&(*aar)->left,n);
+        }
+        else
+        {
+            return rec_insert(&(*aar)->right,n);
+        }
+    }
+}
+void inorder(bs_tree **aar)
+{
+    if(*aar==NULL)
+    {
+        return;
+    }
+    else
+    {
+        inorder(&(*aar)->left);
+        printf("%d ",(*aar)->data);
+        inorder(&(*aar)->right);
+    }
+}
+void it_inorder(bs_tree **aar)
+{
+    bs_tree **stack=(bs_tree **)malloc(sizeof(bs_tree )*100);
+    int top=-1;
+     if(*aar==NULL)
+    {
+        return;
+    }
+    else
+    {
+        while(1)
+        {
+            while(*aar)
+            {
+                stack[++top]= *aar;
+                *aar=(*aar)->left;
+            }
+            if(top!=-1)
+            {
+                  *aar=stack[top--];
+                 printf("%d ",(*aar)->data);
+                 *aar=(*aar)->right;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+}
+void it_preorder(bs_tree **aar)
+{
+    bs_tree **stack=(bs_tree **)malloc(sizeof(bs_tree )*100);
+    int top=-1;
+     if(*aar==NULL)
+    {
+        return;
+    }
+    else
+    {
+        while(1)
+        {
+            while(*aar)
+            {
+                printf("%d ",(*aar)->data);
+                stack[++top]= *aar;
+                *aar=(*aar)->left;
+            }
+            if(top!=-1)
+            {
+                  *aar=stack[top--];
+                 
+                 *aar=(*aar)->right;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+}
+/*struct node *inOrderPredecessor(struct node* root){
+    root = root->left;
+    while (root->right!=NULL)
+    {
+        root = root->right;
+    }
+    return root;
+}
+
+struct node *deleteNode(struct node *root, int value){
+
+    struct node* iPre;
+    if (root == NULL){
+        return NULL;
+    }
+    if (root->left==NULL&&root->right==NULL){
+        free(root);
+        return NULL;
+    }
+
+    //searching for the node to be deleted
+    if (value < root->data){
+        root-> left = deleteNode(root->left,value);
+    }
+    else if (value > root->data){
+        root-> right = deleteNode(root->right,value);
+    }
+    //deletion strategy when the node is found
+    else{
+        iPre = inOrderPredecessor(root);
+        root->data = iPre->data;
+        root->left = deleteNode(root->left, iPre->data);
+    }
+    return root;
+}*/
+bs_tree *inorder_predecessor(bs_tree *aar)
+{
+    aar=aar->left;
+    while((aar)->right!=NULL)
+    {
+        aar=(aar)->right;
+    }
+    return aar;
+}
+bs_tree *delete_bst(bs_tree *root,int n)
+{
+    bs_tree *ipr;
+    if(root==NULL)
+    {
+        return NULL;
+    }
+    if(root->left==NULL&& root->right==NULL)
+    {
+        free(root);
+        return NULL;
+    }
+    if(n<root->data)
+    {
+        root->left=delete_bst(root->left,n);
+    }
+    else if(n>root->data)
+    {
+        root->right=delete_bst(root->right,n);
+    }
+    else
+    {
+        ipr=inorder_predecessor(root);
+        root->data=ipr->data;
+        root->left=delete_bst(root->left,ipr->data);
+    }
+    return root;
+}
+void main ()
+{
+    bs_tree *aar=NULL;
+    it_inser(&aar,5);
+    it_inser(&aar,3);
+    it_inser(&aar,1);
+    it_inser(&aar,6);
+    it_inser(&aar,4);
+    inorder(&aar);
+    printf("\n");
+     /*bs_tree *p=inorder_predecessor(&aar);
+     printf("\n");
+    printf("%d",p->data);*/
+    delete_bst(aar,5);
+    printf("%d",aar->data);
+    //inorder(&aar);
+}
