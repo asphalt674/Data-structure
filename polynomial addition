@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node
+{
+    int pow;
+    int coeff;
+    struct node *next;
+};
+void display(struct node **head)
+{
+    if(*head==NULL)
+    {
+        printf("Empty\n");
+    }
+    else
+    {
+        printf("%dx^%d",temp->coeff,temp->pow);
+        printf("\n");
+    }
+}
+void polyAdd(struct node **head1,struct node **head2)
+{
+    struct node *p1=*head1;
+    struct node *p2=*head2;
+    struct node *head3=(struct node *)malloc(sizeof(struct node));;
+    struct node **t=&head3;
+    printf("Added polynomial is\n");
+    while(p1!=NULL&&p2!=NULL)
+    {
+        if(p1->pow==p2->pow)
+        {
+            head3->coeff= p1->coeff+p2->coeff;
+            printf("%d",head3->coeff);
+        printf("Polynomial List is:\n");
+        struct node *temp=(struct node *)malloc(sizeof(struct node));
+        for(temp=*head;temp->next!=NULL;temp=temp->next)
+        {
+            printf("%dx^%d+",temp->coeff,temp->pow);
+        }
+            p1=p1->next;
+            p2=p2->next;
+            head3=head3->next;
+        }
+        else if(p1->pow>p2->pow)
+        {
+            head3->coeff= p1->coeff;
+            p1=p1->next;
+            head3=head3->next; 
+        } 
+        else
+        {
+            head3->coeff= p2->coeff;
+            p2=p2->next;
+            head3=head3->next;  
+        }
+    }
+        while(p1!=NULL)
+        {
+            head3->coeff= p1->coeff;
+            p1=p1->next;
+            head3=head3->next; 
+        }
+        while(p2!=NULL)
+        {
+            head3->coeff= p2->coeff;
+            p2=p2->next;
+            head3=head3->next;   
+        }
+        //printf("%d",t->coeff);
+    display(t);
+}
+void create(struct node **head)
+{
+    int n;
+    printf("Enter the no of terms\n");
+    scanf("%d",&n);
+    for(int i=0;i<n;i++)
+    {
+         struct node *var=(struct node *)malloc(sizeof(struct node));
+        printf("Enter coefficent of polynomial terms\n");
+        scanf("%d",&var->coeff);
+        printf("Enter power of polynomial terms\n");
+        scanf("%d",&var->pow);
+         var->next=NULL;
+    
+        if(*head==NULL)
+        {
+            *head=var;
+        }
+        else
+        {
+            struct node *temp=*head;
+            while(temp->next!=NULL)
+            {
+                temp=temp->next;
+            }
+            temp->next=var;
+        }
+    }
+}
+int main()
+{
+    struct node *head=NULL;
+    struct node *head1=NULL;
+    struct node *head2=NULL;
+    create(&head1);
+    display(&head1);
+    create(&head2);
+    polyAdd(&head1,&head2);
+}
+   
