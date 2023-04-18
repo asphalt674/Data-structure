@@ -14,7 +14,7 @@ struct node *createnode(int data)
     n->right=NULL;
     return n;
 }
-int isBST(struct node *root)
+int isBST(struct node *root)// not true bst inly checks for single part
 {
     static struct node *prev=NULL;
     if(root!=NULL)
